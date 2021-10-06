@@ -19,10 +19,10 @@ function onSubmitFunction(values) {
       .min(8, 'Password should be of minimum 8 characters length')
       .max(10, 'No more then 10')
       .required('Password is required'),
-    phone: yup
-      .string('Enter Your phone number')
-      .phone("please enter valid URL e.g: https://somewebsite.com")
-      .required('phone number is required'),
+    // phone: yup
+    //   .string('Enter Your phone number')
+    //   .phone("please enter valid URL e.g: https://somewebsite.com")
+    //   .required('phone number is required'),
       name: yup
       .string('Enter Your Full Name ')
       .url("please enter valid Name")
