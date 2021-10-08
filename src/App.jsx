@@ -6,13 +6,25 @@ import './App.css';
 // import * as yup from 'yup';
 import MyForm from './myform/Form';
 import MainTodo from './todo/todoApp';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { BrowserRouter as 
+         Router,
+         Switch,
+         Route,
+         Link
+
+} from 'react-router-dom';
+
 
 
 
 
 function App(){
   return(
+    
     <div>
+    
       <MyForm />
       <MainTodo />
     </div>

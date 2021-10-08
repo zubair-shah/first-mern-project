@@ -2,7 +2,12 @@
 import React from "react";
 import "./todo.css";
 import { TextField , Button} from "@mui/material";
+import { collection, addDoc, getDocs } from "firebase/firestore"
+import { useEffect, useState } from "react"
+import { db } from './../firebase'
+const userCol = collection(db, "todo")
 
+console.log(userCol);
 function Todo({ todo, index, completeTodo ,removeTodo }) {
     return (
       <div
@@ -63,6 +68,21 @@ function MainTodo() {
           isCompleted: false
         }
       ]);
+      useEffect(() => {
+          const getData = async () =>{
+              const querySnapshot = await getDocs(userCol);
+              let todo = []
+              querySnapshot.forEach((doc) =>{
+                  console.log(`${doc.id} => ${doc.data()}`);
+                  todo.push(doc.data())
+              });
+              setTodos(todo)
+          }
+          getData()
+          return () => {
+             console.log("cleanup")
+          };
+      }, [])
   const addTodo = text => {
     const newTodos = [...todos, { text }];
     setTodos(newTodos);
