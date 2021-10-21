@@ -30,7 +30,7 @@ function onSubmitFunction(values) {
   });
 
 
-function MyForm(){
+function Signup(){
 
   
     const formik = useFormik({
@@ -47,13 +47,13 @@ function MyForm(){
     return(
         <div>
             <h1 className="text-center">
-                My Form
+               Welcom
             </h1>
 
     <div className="form d-flex justify-content-center p-5">
             <div className="card">
         <div className="card-header">
-          <center><h3>Login Form</h3></center>
+          <center><h3> SignUp Form</h3></center>
         </div>
         <Formik>
         <form onSubmit={formik.handleSubmit} id="loginForm" className="card-body px-5 py-4">
@@ -148,4 +148,4 @@ function MyForm(){
     )
 }
 
-export default MyForm;
+export default Signup;

@@ -4,10 +4,10 @@ import './App.css';
 // import TextField from '@mui/material/TextField';
 // import Button from '@mui/material/Button';
 // import * as yup from 'yup';
-import MyForm from './myform/Form';
+import Signup from './signup/Form';
+import LoginForm from './login/Form';
+import Nonpath from './404';
 import MainTodo from './todo/todoApp';
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { BrowserRouter as 
          Router,
          Switch,
@@ -24,9 +24,24 @@ function App(){
   return(
     
     <div>
+    <Router>
+      <Switch>
+      <Route  path='/todo'>
+        <MainTodo />
+        </Route>
+        <Route  path='/login'>
+        <LoginForm />
+        </Route>
+        <Route exact path='/'>
+        <Signup />
+        </Route>
+        <Route  component={404}>
+        <Nonpath />
+        </Route>
+      </Switch>
     
-      <MyForm />
-      <MainTodo />
+    </Router>
+      
     </div>
   )
 }
