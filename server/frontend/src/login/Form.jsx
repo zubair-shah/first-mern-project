@@ -65,32 +65,6 @@ function LoginForm(){
         <Formik>
         <form onSubmit={formik.handleSubmit} id="loginForm" className="card-body px-5 py-4">
           
-          {/* <center><small><span id="error" style={{color: 'red'}} /></small></center>
-          <center><label className="custom-field">
-              <input 
-             type="text" 
-             name="email" 
-             value={formik.values.email}
-             onChange={formik.handleChange}
-             error={formik.touched.email && Boolean(formik.errors.email)}
-             helpertext={formik.touched.email && formik.errors.email}
-             />
-            <span className="placeholder">Email Id</span>
-            </label><br />
-            <label className="custom-field">
-            <input id="password" type="password" className="input" 
-      name="password"
-      value={formik.values.password}
-      onChange={formik.handleChange}
-      error={formik.touched.password && Boolean(formik.errors.password)}
-      helpertext={formik.touched.password && formik.errors.password}
-      />
-              <span className="placeholder">Password</span>
-            </label></center><br /><br />
-          <a href="#">Forgot Password</a>
-          <center><button type="submit" className="btn btn-primary">Login</button>
-            <button className="btn btn-secondary">Sign Up</button>
-          </center> */}
 
 
 
@@ -123,7 +97,7 @@ function LoginForm(){
           />
           
               <center><button type="submit" className="btn btn-primary">Login</button>
-            <button className="btn btn-secondary"> <Link to="/signup">Sign Up</Link></button>
+              <Link to="/signup"> <button className="btn btn-secondary"> Sign Up</button></Link>
           </center> 
           
         </form>
