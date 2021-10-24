@@ -41,5 +41,5 @@ app.get('/**' , (req , res) =>{
 
 app.use(Router)
 app.listen(PORT, () =>{
-    console.log(`your port is running on http://localhost:${PORT}`)
+    console.log(`your port is running on ${PORT}`)
 } )
