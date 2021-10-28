@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require("mongoose")
 const Router = require("./routes")
-const PORT = process.env.PORT || 7000;
+const PORT = process.env.PORT || 4000;
 const app = express()
 const path = require('path')
 const cors = require("cors");
@@ -20,8 +20,6 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-
-
 app.use(cors(["localhost:4000", "localhost:5000"]))
 app.use(express.json())
 
@@ -31,9 +29,9 @@ app.get('/hello' , (req , res) =>{
     res.send("Hello world")
 })
 
-// app.get('/api/v1/login', (req, res) => {
-//     res.send()
-// })
+app.post('/api/v1/login', (req, res) => {
+    res.send("user created")
+})
 
 app.get('/**' , (req , res) =>{
     res.redirect('/')

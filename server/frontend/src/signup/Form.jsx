@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Formik, Field, Form, useFormik } from "formik";
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 import './Form.css'
+import axios from 'axios';
 import { BrowserRouter  as
   Router,
   Route,
@@ -13,6 +14,18 @@ import { BrowserRouter  as
 
 function onSubmitFunction(values) {
     console.log("values: ", values)
+    const dev = "http://localhost:4000";
+    const baseURL = window.location.hostname.split(":")[0] === "localhost" ? dev : "";
+        axios.post(`${baseURL}/api/v1/login`,{
+          email:values.email,
+          password:values.password
+        
+        }).then(res=>{
+        alert("succes")
+      })
+      .catch(err=>{
+        alert("masla")
+      })
   }
 
   const validationSchema = yup.object({
@@ -31,14 +44,13 @@ function onSubmitFunction(values) {
     //   .required('phone number is required'),
       name: yup
       .string('Enter Your Full Name ')
-      .url("please enter valid Name")
+      // .url("please enter valid Name")
       .required('Full Namw is required'),
   });
 
-
 function Signup(){
 
-  
+ 
     const formik = useFormik({
         validationSchema : validationSchema,
         initialValues:{
@@ -114,7 +126,7 @@ function Signup(){
           />
           
               <center><Link to="/"><button className="btn btn-primary">  Login </button></Link> 
-            <button type="submit"  className="btn btn-secondary">Sign Up</button>
+            <button type="submit" onClick={onSubmitFunction}  className="btn btn-secondary">Sign Up</button>
           </center> 
           
         </form>
