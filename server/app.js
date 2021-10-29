@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require("mongoose")
-const Router = require("./routes")
+// const Router = require("./routes")
 const PORT = process.env.PORT || 4000;
 const app = express()
 const path = require('path')
@@ -37,7 +37,7 @@ app.get('/**' , (req , res) =>{
     res.redirect('/')
 })
 
-app.use(Router)
+// app.use(Router)
 app.listen(PORT, () =>{
     console.log(`your port is running on ${PORT}`)
 } )
