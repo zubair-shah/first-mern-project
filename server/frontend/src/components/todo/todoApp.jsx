@@ -4,7 +4,7 @@ import "./todo.css";
 import { TextField , Button} from "@mui/material";
 import { collection, addDoc, getDocs } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { db } from './../firebase'
+import { db } from '../../firebase'
 const userCol = collection(db, "todo")
 
 console.log(userCol);

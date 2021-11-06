@@ -1,20 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Formik, Field, Form, useFormik } from "formik";
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 import './Form.css'
-import { BrowserRouter as 
+import axios from 'axios';
+import { GlobalContext } from "../../context/Context";
+import { useContext } from "react";
+import { useHistory } from 'react-router-dom';
+import { BrowserRouter  as
   Router,
   Route,
   Switch,
-  Link
-
+  Link 
 } from 'react-router-dom';
-
-function onSubmitFunction(values) {
-    console.log("values: ", values)
-  }
 
   const validationSchema = yup.object({
     email: yup
@@ -32,39 +31,71 @@ function onSubmitFunction(values) {
     //   .required('phone number is required'),
       name: yup
       .string('Enter Your Full Name ')
-      .url("please enter valid Name")
-      .required('Full Namw is required'),
+      // .url("please enter valid Name")
+      .required('Full Name is required'),
   });
 
+function Signup(){
 
-function LoginForm(){
-
+  const history = useHistory();
+  const dev = "http://localhost:4000";
+  const baseURL = window.location.hostname.split(":")[0] === "localhost" ? dev : ""; 
   
     const formik = useFormik({
-        validationSchema : validationSchema,
+  
         initialValues:{
-            name: '',
+            fullName: '',
             email:'',
             phone:'',
             password:'',
 
         },
-        onSubmit: onSubmitFunction
+        validationSchema : validationSchema,
+        onSubmit: (values) => {
+    
+          axios.post(`${baseURL}/api/v1/add_user`,{
+            fullName: values.fullName,
+            phone: Number(values.phone),
+            email:values.email,
+            password:values.password
+          
+          }).then((result) => {
+            if (result.data === "user created") {
+              //message
+              history.push("/login");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        }
     });
     return(
         <div>
             <h1 className="text-center">
-                Welcome to Todo List
+               Welcome To Todo List
             </h1>
 
     <div className="form d-flex justify-content-center p-5">
             <div className="card">
         <div className="card-header">
-          <center><h3>Login Form</h3></center>
+          <center><h3> SignUp Form</h3></center>
         </div>
         <Formik>
         <form onSubmit={formik.handleSubmit} id="loginForm" className="card-body px-5 py-4">
-          
+
+<TextField
+            fullWidth
+            color="primary"
+            id="outlined-basic"
+            label="Full Name"
+            variant="outlined"
+            name="fullName"
+            value={formik.values.fullName}
+            onChange={formik.handleChange}
+            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+            helperText={formik.touched.fullName && formik.errors.fullName}
+          />
 
 
 
@@ -81,6 +112,12 @@ function LoginForm(){
             helperText={formik.touched.email && formik.errors.email}
           />
           
+<TextField 
+           fullWidth
+           id="outlined-basic"
+           label="Phone"
+           variant="outlined"
+           name="phone" />
 
           <TextField
             fullWidth
@@ -96,12 +133,12 @@ function LoginForm(){
             helperText={formik.touched.password && formik.errors.password}
           />
           
-              <center><button type="submit" className="btn btn-primary">Login</button>
-              <Link to="/signup"> <button className="btn btn-secondary"> Sign Up</button></Link>
+              <center><Link to="/"><button className="btn btn-primary">  I have an account </button></Link> 
+            <button type="submit"  className="btn btn-secondary">Signup</button>
           </center> 
           
         </form>
-        </Formik> 
+        </Formik>
     
       </div>
             </div>
@@ -109,4 +146,4 @@ function LoginForm(){
     )
 }
 
-export default LoginForm;
+export default Signup;

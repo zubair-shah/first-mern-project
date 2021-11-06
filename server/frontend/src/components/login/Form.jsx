@@ -1,32 +1,21 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { Formik, Field, Form, useFormik } from "formik";
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 import './Form.css'
-import axios from 'axios';
-import { BrowserRouter  as
+import axios from 'axios'
+import { GlobalContext } from "../../context/Context";
+import { useContext } from "react";
+import { BrowserRouter as 
   Router,
   Route,
   Switch,
-  Link 
+  Link
+
 } from 'react-router-dom';
 
-function onSubmitFunction(values) {
-    console.log("values: ", values)
-    const dev = "http://localhost:4000";
-    const baseURL = window.location.hostname.split(":")[0] === "localhost" ? dev : "";
-        axios.post(`${baseURL}/api/v1/login`,{
-          email:values.email,
-          password:values.password
-        
-        }).then(res=>{
-        alert("succes")
-      })
-      .catch(err=>{
-        alert("masla")
-      })
-  }
+
 
   const validationSchema = yup.object({
     email: yup
@@ -44,50 +33,67 @@ function onSubmitFunction(values) {
     //   .required('phone number is required'),
       name: yup
       .string('Enter Your Full Name ')
-      // .url("please enter valid Name")
+      .url("please enter valid Name")
       .required('Full Namw is required'),
   });
 
-function Signup(){
 
- 
+function LoginForm(){
+  let { dispatch } = useContext(GlobalContext);
+  const dev = "http://localhost:4000";
+  const baseURL =
+    window.location.hostname.split(":")[0] === "localhost" ? dev : "";
+  
     const formik = useFormik({
-        validationSchema : validationSchema,
         initialValues:{
-            name: '',
+            
             email:'',
-            phone:'',
+        
             password:'',
 
         },
-        onSubmit: onSubmitFunction
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+          axios
+            .post(`${baseURL}/api/v1/login`, {
+              email: values.email,
+              password: values.password,
+            })
+            .then((result) => {
+              if (result.data !== "error") {
+                dispatch({
+                  type: "USER_LOGIN",
+                  payload: {
+                    fullName: result.data.fullName,
+                    email: result.data.email,
+                    gender: result.data.gender,
+                    phoneNumber: result.data.phoneNumber,
+                    address: result.data.address,
+                  },
+                });
+                //message
+                console.log("successful login");
+              } else {
+                 console.log("Email or password is invalid");
+               
+              }
+            });
+        },
     });
     return(
         <div>
             <h1 className="text-center">
-               Welcome To Todo List
+                Welcome to Todo List
             </h1>
 
     <div className="form d-flex justify-content-center p-5">
             <div className="card">
         <div className="card-header">
-          <center><h3> SignUp Form</h3></center>
+          <center><h3>Login Form</h3></center>
         </div>
         <Formik>
         <form onSubmit={formik.handleSubmit} id="loginForm" className="card-body px-5 py-4">
-
-<TextField
-            fullWidth
-            color="primary"
-            id="outlined-basic"
-            label="Full Name"
-            variant="outlined"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
-          />
+          
 
 
 
@@ -104,12 +110,6 @@ function Signup(){
             helperText={formik.touched.email && formik.errors.email}
           />
           
-<TextField 
-           fullWidth
-           id="outlined-basic"
-           label="Phone"
-           variant="outlined"
-           name="phone" />
 
           <TextField
             fullWidth
@@ -125,12 +125,12 @@ function Signup(){
             helperText={formik.touched.password && formik.errors.password}
           />
           
-              <center><Link to="/"><button className="btn btn-primary">  Login </button></Link> 
-            <button type="submit" onClick={onSubmitFunction}  className="btn btn-secondary">Sign Up</button>
+              <center><button type="submit" className="btn btn-primary">Login</button>
+              <Link to="/signup"> <button className="btn btn-secondary"> Create an Account</button></Link>
           </center> 
           
         </form>
-        </Formik>
+        </Formik> 
     
       </div>
             </div>
@@ -138,4 +138,4 @@ function Signup(){
     )
 }
 
-export default Signup;
+export default LoginForm;

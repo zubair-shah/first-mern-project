@@ -1,8 +1,10 @@
 import './App.css';
-import Signup from './signup/Form';
-import LoginForm from './login/Form';
-import Nonpath from './404';
-import MainTodo from './todo/todoApp';
+import Signup from './components/signup/Form';
+import LoginForm from './components/login/Form';
+import Nonpath from './components/404';
+import Home from "./components/Home/Home";
+import Dashboard from "./components/Dashboard/Dashboard";
+import MainTodo from './components/todo/todoApp';
 import { BrowserRouter as 
          Router,
          Switch,
@@ -21,6 +23,9 @@ function App(){
     <div>
     <Router>
       <Switch>
+      <Route exact path="/dashboard">
+          <Dashboard />
+        </Route>
       <Route  path='/todo'>
         <MainTodo />
         </Route>
@@ -29,6 +34,9 @@ function App(){
         </Route>
         <Route exact path='/'>
         <LoginForm />
+        </Route>
+        <Route exact path="*">
+          <Home />
         </Route>
         <Route  component={404}>
         <Nonpath />

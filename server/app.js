@@ -20,18 +20,65 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-app.use(cors(["localhost:4000", "localhost:5000"]))
-app.use(express.json())
 
 app.use('/', express.static(path.join(__dirname, 'frontend/build')))
 
-app.get('/hello' , (req , res) =>{
-    res.send("Hello world")
+const signup = mongoose.model("Signup User" ,{
+    fullName: {
+      type: String,
+      required: true,
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+    password: {
+        type: String,
+        required: true,
+      },
+      email: {
+        type: String,
+        required: true,
+      },
+  });
+  
+  const post = mongoose.model("Users Post", {
+    text: String,
+    author: String,
+  });
+
+// app.use(cors(["localhost:4000", "localhost:5000"]))
+// app.use(express.json())
+
+
+app.get('/api/v1/add_user' , (req , res) =>{
+    signup.find({}, (err , data) =>{
+        res.send(data)
+    })
+})
+
+app.post('/api/v1/add_user' , async (req , res) =>{
+  const signupUser = await new signup({
+      fullName : req.body.fullName,
+      email : req.body.email,
+      phone : req.body.phone,
+      password : req.body.password
+  });
+  signupUser.save().then(() => {
+      console.log('user created');
+      res.send("user created")
+  })
 })
 
 app.post('/api/v1/login', (req, res) => {
     res.send("user created")
 })
+app.get("/api/v1/post", (req, res) => {
+    post.find({}, (err, data) => {
+      res.send(data);
+    });
+  });
+  
 
 app.get('/**' , (req , res) =>{
     res.redirect('/')
