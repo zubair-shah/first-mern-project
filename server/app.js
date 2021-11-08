@@ -70,8 +70,35 @@ app.post('/api/v1/add_user' , async (req , res) =>{
   })
 })
 
-app.post('/api/v1/login', (req, res) => {
+app.post('/api/v1/login', async(req, res) => {
+  try{
+    const user = await signup.findOne({email:req.body.email});
+    result === true;
+  
+      // result === true
+      if (!err) {
+        if (result) {
+          res.send(user);
+        } else {
+          res.send("error");
+        }
+      }
+    }catch (error){
+
     res.send("user created")
+  }
+})
+
+app.post('/api/v1/post' , async (req,res,) => {
+  const newPost = await new post({
+    text: req.body.text,
+    author: req.body.author
+  });
+  newPost.save().then(() =>{
+    console.log("post created")
+    res.send("post created")
+    
+  })
 })
 app.get("/api/v1/post", (req, res) => {
     post.find({}, (err, data) => {
@@ -81,7 +108,7 @@ app.get("/api/v1/post", (req, res) => {
   
 
 app.get('/**' , (req , res) =>{
-    res.redirect('/')
+  res.sendFile(path.join(__dirname,"/web/build/index.html"));
 })
 
 // app.use(Router)

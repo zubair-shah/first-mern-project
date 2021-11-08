@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useState } from 'react'
+import  Message  from '../Message/Message';
+import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, useFormik } from "formik";
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
-import './Form.css'
+import './Form.css';
+
 import axios from 'axios'
 import { GlobalContext } from "../../context/Context";
-import { useContext } from "react";
+import { useContext } from 'react';
 import { BrowserRouter as 
   Router,
   Route,
@@ -40,6 +43,7 @@ import { BrowserRouter as
 
 function LoginForm(){
   let { dispatch } = useContext(GlobalContext);
+  const [messageBar , setMessageBar] = useState("")
   const dev = "http://localhost:4000";
   const baseURL =
     window.location.hostname.split(":")[0] === "localhost" ? dev : "";
@@ -66,22 +70,39 @@ function LoginForm(){
                   payload: {
                     fullName: result.data.fullName,
                     email: result.data.email,
-                    gender: result.data.gender,
-                    phoneNumber: result.data.phoneNumber,
-                    address: result.data.address,
+                    // gender: result.data.gender,
+                    phone: result.data.phone,
+                    // address: result.data.address,
                   },
                 });
                 //message
+                setMessageBar(true);
+                setTimeout(() => {
+                  history.push("/dashboard");
+                  setMessageBar([]);
+                }, 1000);
                 console.log("successful login");
               } else {
+                setMessageBar(false);
+                setTimeout(() => {
+                  setMessageBar([]);
+                }, 1000);
                  console.log("Email or password is invalid");
                
               }
             });
         },
     });
+    const history = useHistory();
     return(
+      
         <div>
+            {messageBar === true ? <Message type="success" message="Welcome" /> : ""}
+      {messageBar === false ? (
+        <Message type="error" message="Invalid email or password" />
+      ) : (
+        ""
+      )}
             <h1 className="text-center">
                 Welcome to Todo List
             </h1>
@@ -126,7 +147,7 @@ function LoginForm(){
           />
           
               <center><button type="submit" className="btn btn-primary">Login</button>
-              <Link to="/signup"> <button className="btn btn-secondary"> Create an Account</button></Link>
+              <Link to="/signup"> <button className="btn btn-secondary"  onClick={() => history.push("/signup")}> Create an Account</button></Link>
           </center> 
           
         </form>

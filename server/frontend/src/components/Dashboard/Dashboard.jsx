@@ -27,7 +27,7 @@ import Paper from "@mui/material/Paper";
 
 function Dashboard() {
   const history = useHistory();
-  const dev = "http://localhost:2000";
+  const dev = "http://localhost:4000";
   const baseURL =
     window.location.hostname.split(":")[0] === "localhost" ? dev : "";
   let { state, dispatch } = useContext(GlobalContext);
@@ -120,7 +120,7 @@ function Dashboard() {
           `Name: ${state.user.fullName}`,
           `Email: ${state.user.email}`,
           `Gender: ${state.user.gender}`,
-          `Phone Number: ${state.user.phoneNumber}`,
+          `Phone Number: ${state.user.phone}`,
           `Address: ${state.user.address}`,
         ].map((text, index) => (
           <ListItem key={text}>

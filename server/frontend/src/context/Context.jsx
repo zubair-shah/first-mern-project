@@ -1,4 +1,4 @@
-import React, {Children, createContext , useReducer} from 'react'
+import React, { createContext , useReducer} from 'react'
 import { reducer } from './Reducer';
 export const GlobalContext = createContext("initial values");
 let data = {

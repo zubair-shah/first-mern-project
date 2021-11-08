@@ -5,7 +5,7 @@ export const reducer = (state , action) =>{
                 action.payload.fullName &&
                 action.payload.email &&
                 action.payload.password &&
-                action.payload.phoneNumber 
+                action.payload.phone 
 
             ){
                 return{ ...state , user: action.payload}

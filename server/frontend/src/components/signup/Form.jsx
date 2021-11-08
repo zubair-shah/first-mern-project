@@ -1,12 +1,11 @@
-import React, {useEffect} from 'react'
-import { Formik, Field, Form, useFormik } from "formik";
-import Stack from '@mui/material/Stack';
+import React, {useEffect , useState} from 'react'
+import { Formik, Field, Form, useFormik} from "formik";
 import TextField from '@mui/material/TextField';
+import Box from "@mui/material/Box";
 import * as yup from 'yup';
 import './Form.css'
 import axios from 'axios';
-import { GlobalContext } from "../../context/Context";
-import { useContext } from "react";
+import Message from '../Message/Message'
 import { useHistory } from 'react-router-dom';
 import { BrowserRouter  as
   Router,
@@ -27,7 +26,7 @@ import { BrowserRouter  as
       .required('Password is required'),
     // phone: yup
     //   .string('Enter Your phone number')
-    //   .phone("please enter valid URL e.g: https://somewebsite.com")
+    //   .phone("please enter valid phone e.g: 03XXXXXXXXX")
     //   .required('phone number is required'),
       name: yup
       .string('Enter Your Full Name ')
@@ -36,8 +35,8 @@ import { BrowserRouter  as
   });
 
 function Signup(){
-
   const history = useHistory();
+  const [messageBar, setMessageBar] = useState("");
   const dev = "http://localhost:4000";
   const baseURL = window.location.hostname.split(":")[0] === "localhost" ? dev : ""; 
   
@@ -52,7 +51,7 @@ function Signup(){
         },
         validationSchema : validationSchema,
         onSubmit: (values) => {
-    
+          console.log("working")
           axios.post(`${baseURL}/api/v1/add_user`,{
             fullName: values.fullName,
             phone: Number(values.phone),
@@ -62,7 +61,12 @@ function Signup(){
           }).then((result) => {
             if (result.data === "user created") {
               //message
+              setMessageBar(true);
+            setTimeout(() => {
               history.push("/login");
+              setMessageBar("");
+            }, 1000);
+            
             }
           })
           .catch((err) => {
@@ -70,8 +74,24 @@ function Signup(){
           });
         }
     });
+    useEffect(() => {
+      axios.get(`${baseURL}/api/v1/signupuser`).then((res) => {
+        // console.log(res);
+      });
+      // eslint-disable-next-line
+    }, []);
+  
     return(
+     
         <div>
+           {messageBar === true ? (
+        <Message
+          type="success"
+          message="Welcome! Successfully account created"
+        />
+      ) : (
+        ""
+      )}
             <h1 className="text-center">
                Welcome To Todo List
             </h1>
@@ -81,8 +101,16 @@ function Signup(){
         <div className="card-header">
           <center><h3> SignUp Form</h3></center>
         </div>
-        <Formik>
-        <form onSubmit={formik.handleSubmit} id="loginForm" className="card-body px-5 py-4">
+       
+        <Box
+            type="form"
+            component="form"
+            noValidate
+            autoComplete="off"
+            // textAlign="center"
+            onSubmit={formik.handleSubmit}
+            id="loginForm" className="card-body px-5 py-4"
+          >
 
 <TextField
             fullWidth
@@ -106,6 +134,7 @@ function Signup(){
             label="Email"
             variant="outlined"
             name="email"
+            type="email"
             value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
@@ -133,12 +162,16 @@ function Signup(){
             helperText={formik.touched.password && formik.errors.password}
           />
           
-              <center><Link to="/"><button className="btn btn-primary">  I have an account </button></Link> 
-            <button type="submit"  className="btn btn-secondary">Signup</button>
+              <center>
+                <Link to="/">
+                  <button className="btn btn-primary" onClick={() => history.push("/login")}>  I have an account </button>
+                  </Link> 
+                 <button type="submit"  className="btn btn-secondary">Signup</button>
           </center> 
           
-        </form>
-        </Formik>
+        {/* </form> */}
+        </Box>
+    
     
       </div>
             </div>

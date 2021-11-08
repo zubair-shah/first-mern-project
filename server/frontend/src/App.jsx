@@ -9,7 +9,7 @@ import { BrowserRouter as
          Router,
          Switch,
          Route,
-         Link
+        //  Link
 
 } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ function App(){
       <Route  path='/todo'>
         <MainTodo />
         </Route>
-        <Route  path='/signup'>
+        <Route exact path='/signup'>
         <Signup />
         </Route>
         <Route exact path='/'>
