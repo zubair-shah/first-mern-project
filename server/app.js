@@ -23,24 +23,15 @@ db.once("open", function () {
 
 app.use('/', express.static(path.join(__dirname, 'frontend/build')))
 
-const signup = mongoose.model("Signup User" ,{
-    fullName: {
-      type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
-      default: 0,
-    },
-    password: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-  });
+const signup = mongoose.model("signup User", {
+  fullName: String,
+  email: String,
+  gender: String,
+  phoneNumber: Number,
+  password: String,
+  address: String,
+});
+
   
   const post = mongoose.model("Users Post", {
     text: String,
@@ -58,7 +49,7 @@ app.get('/api/v1/add_user' , (req , res) =>{
 })
 
 app.post('/api/v1/add_user' , async (req , res) =>{
-  const signupUser = await new signup({
+  const signupUser = await signup({
       fullName : req.body.fullName,
       email : req.body.email,
       phone : req.body.phone,
@@ -73,7 +64,7 @@ app.post('/api/v1/add_user' , async (req , res) =>{
 app.post('/api/v1/login', async(req, res) => {
   try{
     const user = await signup.findOne({email:req.body.email});
-    result === true;
+    // result === true;
   
       // result === true
       if (!err) {

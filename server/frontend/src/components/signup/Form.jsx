@@ -50,7 +50,7 @@ function Signup(){
 
         },
         validationSchema : validationSchema,
-        onSubmit: (values) => {
+        onSubmit:function (values) {
           console.log("working")
           axios.post(`${baseURL}/api/v1/add_user`,{
             fullName: values.fullName,
@@ -58,16 +58,8 @@ function Signup(){
             email:values.email,
             password:values.password
           
-          }).then((result) => {
-            if (result.data === "user created") {
-              //message
-              setMessageBar(true);
-            setTimeout(() => {
-              history.push("/login");
-              setMessageBar("");
-            }, 1000);
-            
-            }
+          }).then((res) => {
+          console.log("res: " , res.data)
           })
           .catch((err) => {
             console.log(err);
@@ -75,7 +67,7 @@ function Signup(){
         }
     });
     useEffect(() => {
-      axios.get(`${baseURL}/api/v1/signupuser`).then((res) => {
+      axios.get(`${baseURL}/api/v1/add_user`).then((res) => {
         // console.log(res);
       });
       // eslint-disable-next-line
